@@ -1,8 +1,8 @@
-import literal
-import clause
+import serviceapi
 
 
-c1 = clause.Clause([literal.Literal(0, False), literal.Literal(3,True)])
+
+#TODO:  read this:  https://users.soe.ucsc.edu/~optas/papers/handbook.pdf
 
 
-print(c1)
+print(serviceapi.generate(16, int(16.0 * 4.2)))

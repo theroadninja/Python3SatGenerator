@@ -1,10 +1,10 @@
 #normalizer.py
 
-import problem
+import satlib.problem
 
 
 # "normalizes" 3 sat problems by converting them according to my rules
 
 
-p = problem.Problem()
+p = satlib.problem.Problem()
 print(p)
