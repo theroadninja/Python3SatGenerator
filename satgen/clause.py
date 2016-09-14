@@ -10,4 +10,8 @@ class Clause:
         self.literals = literals
 
     def __str__(self):
+        '''  just seeing if doctest works
+        >>> 1
+        1
+        '''
         return "(" + " v ".join([str(x) for x in self.literals]) + ")"
