@@ -20,9 +20,41 @@ class Problem:
         # uuid - uuid generated in whatever standard
         # cnf or json, maybe a binary format, etc
 
+    def add(self, clause):
+        self.clauses.append(clause)
+
+
+    def __eq__(self, other):
+        '''
+        Warning:  naiive and brute force equality implementation
+
+        It is possible to have two Problems with identical structure that will
+        still return false (i.e. graph isomorphism problem not solved here)
+
+        :param other:
+        :return:
+        '''
+        if len(self.clauses) != len(other.clauses):
+            return False
+
+        self.clauses = sorted(self.clauses)
+        other.clauses = sorted(other.clauses)
+
+        for i in range(len(self.clauses)):
+            if self.clauses[i] != other.clauses[i]:
+                return False
+
+        return True
+
+
 
 
     def to_cnf(self):
+        return ""
 
+    @staticmethod
+    def from_cnf(cnf_str):
+        p = Problem()
+        return p
 
     #TODO: need an equals() method useful enough for a unit test
