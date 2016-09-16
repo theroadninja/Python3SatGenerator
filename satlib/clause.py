@@ -88,3 +88,13 @@ class Clause:
         1
         '''
         return "(" + " v ".join([str(x) for x in self.literals]) + ")"
+
+    @staticmethod
+    def fromCnfArray(numbers):
+        if numbers[-1] != 0:
+            raise Exception("clause line does not end with 0; multi-line clauses are not supported")
+        else:
+            numbers.pop()
+
+        literals = [Lit.fromCnf(i) for i in numbers]
+        return Clause(*literals)

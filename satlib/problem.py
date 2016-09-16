@@ -3,6 +3,8 @@
 #a 3SAT instance
 #called problem and not instance because "instance" is a programming word
 
+from clause import Clause
+
 class Problem:
     def __init__(self):
         self.clauses = []
@@ -23,6 +25,15 @@ class Problem:
     def add(self, clause):
         self.clauses.append(clause)
 
+    def addComment(self, comment):
+        self.comment_lines.append(comment)
+
+    def hasClause(self, clause):
+        #TODO: slow.  need to use set to be fast
+        for c in self.clauses:
+            if c == clause:
+                return True
+        return False
 
     def __eq__(self, other):
         '''
@@ -54,7 +65,38 @@ class Problem:
 
     @staticmethod
     def from_cnf(cnf_str):
+        lines = cnf_str.splitlines()
+        return Problem.from_cnf_lines(lines)
+
+
+    @staticmethod
+    def from_cnf_lines(lines):
+        '''
+        This maybe not be the canonical cnf format (e.g.  http://people.sc.fsu.edu/~jburkardt/data/cnf/cnf.html )
+        I am not allowing multi-line clauses because that is fucking retarded.
+
+        :param lines:
+        :return:
+        '''
         p = Problem()
+
+        for line in lines:
+            line = line.strip() #trim
+            if line == "":
+                continue
+            elif "c" == line[0].lower():
+                p.addComment(line)
+            elif "p" == line[0].lower():
+                #p {problem type} {varcount} {clausecount}
+                _, problem_type, varcount, clausecount = line.split()
+            else:
+                numbers = [int(s) for s in line.split()]
+                c = Clause.fromCnfArray(numbers)
+                p.add(c)
+
+
+        #TODO:  useful exception handling?
+
         return p
 
     #TODO: need an equals() method useful enough for a unit test

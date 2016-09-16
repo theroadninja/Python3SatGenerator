@@ -7,11 +7,17 @@ class Lit:
 
     def __init__(self, variable, bool=None):
         #simulate a second constructor Lit(i) that takes a positive/negative i, as if from cnf
+        '''
+
+        :param variable:
+        :param cleanOneBased: fix input by translating to zero-based.  cannot be set if bool is passed
+        :param bool:
+        '''
         if bool is None:
             bool = (variable >= 0)
             variable = abs(variable)
         elif variable < 0:
-            raise "variable cannot be < 0 if boolean provided"
+                raise "variable cannot be < 0 if boolean provided"
 
         self.variable = variable
         self.bool = Lit.to_bool[bool]
@@ -79,3 +85,9 @@ class Lit:
 
     def __str__(self):
         return "{}{}".format(self.variable, Lit.TF[self.bool])
+
+    @staticmethod
+    def fromCnf(i):
+        flag = (i > 0)
+        variable = abs(i) - 1 #convert to zero-based index
+        return Lit(variable, flag)
