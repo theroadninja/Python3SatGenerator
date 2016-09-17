@@ -10,6 +10,8 @@ class Problem:
         self.clauses = []
         self.comment_lines = []
         self.name = ""
+        self.variables = set()
+
         #file name convention:
         # {varcount}v.{clausecount}c.{a}.{b}.{c}.{gen}.yyyymmddh*m*.{batch_seq#}.{uuid}.cnf
         # a = highest count of a literal  (should be v_0) -- hexadecimal
@@ -24,6 +26,8 @@ class Problem:
 
     def add(self, clause):
         self.clauses.append(clause)
+        for literal in clause.literals:
+            self.variables.add(literal.variable)
 
     def addComment(self, comment):
         self.comment_lines.append(comment)
@@ -58,10 +62,26 @@ class Problem:
         return True
 
 
+    def var_count(self):
+        return len(self.variables)
+
+    def clause_count(self):
+        return len(self.clauses)
 
 
     def to_cnf(self):
-        return ""
+        lines = []
+        for comment in self.comment_lines:
+            lines.append(comment)
+
+        pline = "p cnf {} {}".format(
+            str(self.var_count()), str(self.clause_count()))
+        lines.append( pline )
+
+        for c in self.clauses:
+            lines.append(c.to_cnf_line())
+
+        return "\n".join(lines)
 
     @staticmethod
     def from_cnf(cnf_str):
@@ -80,6 +100,7 @@ class Problem:
         '''
         p = Problem()
 
+        varcount = 0
         for line in lines:
             line = line.strip() #trim
             if line == "":
@@ -94,9 +115,9 @@ class Problem:
                 c = Clause.fromCnfArray(numbers)
                 p.add(c)
 
+        #TODO:  !!!!! normalize, and fix varcount
 
         #TODO:  useful exception handling?
-
         return p
 
     #TODO: need an equals() method useful enough for a unit test

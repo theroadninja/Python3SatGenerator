@@ -3,8 +3,17 @@ import unittest
 from satlib.problem import Problem
 from satlib.clause import Clause
 from satlib.lit import Lit
+import os, inspect
 
 class TestProblem(unittest.TestCase):
+
+    def samples_folder(self):
+        return os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "/samples/"
+
+    def sample_problem(self, filename):
+        folder = self.samples_folder()
+        with open(folder + filename) as f:
+            return Problem.from_cnf(f.read())
 
     def test_problem_equals(self):
         p1 = Problem()
@@ -22,11 +31,11 @@ class TestProblem(unittest.TestCase):
         self.assertNotEqual(p1, p2)
 
     def test_problem_from_cnf(self):
-        import os, inspect
 
-        folder = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        with open(folder + "/samples/sample.small.cnf") as f:
-            p = Problem.from_cnf(f.read())
+        p = self.sample_problem("sample.small.cnf")
+        #folder = self.samples_folder()
+        #with open(folder + "sample.small.cnf") as f:
+        #    p = Problem.from_cnf(f.read())
 
         self.assertTrue(p.hasClause(Clause.fromCnfArray([1, 2, 3, 0])))
         self.assertTrue(p.hasClause(Clause.fromCnfArray([-1, 4, 3, 0])))
@@ -37,7 +46,15 @@ class TestProblem(unittest.TestCase):
 
         self.assertFalse(p.hasClause(Clause.fromCnfArray([1, 2, 99, 0])))
 
-        pass #TODO
+    def test_serialize(self):
+        p = self.sample_problem("sample.small.cnf")
+        #print(p.to_cnf())
+
+        p2 = Problem.from_cnf(p.to_cnf())
+        self.assertEqual(6, p2.clause_count())
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

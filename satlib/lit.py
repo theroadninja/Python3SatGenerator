@@ -86,6 +86,12 @@ class Lit:
     def __str__(self):
         return "{}{}".format(self.variable, Lit.TF[self.bool])
 
+    def to_cnf(self):
+        i = self.variable + 1 #convert to one based
+        if not self.bool:
+            i = i * -1
+        return str(i)
+
     @staticmethod
     def fromCnf(i):
         flag = (i > 0)

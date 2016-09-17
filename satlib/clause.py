@@ -89,6 +89,15 @@ class Clause:
         '''
         return "(" + " v ".join([str(x) for x in self.literals]) + ")"
 
+    def to_cnf_line(self):
+        line = ""
+        for literal in self.literals:
+            line += literal.to_cnf() + " "
+
+        line = line + "0"
+        return line
+
+
     @staticmethod
     def fromCnfArray(numbers):
         if numbers[-1] != 0:

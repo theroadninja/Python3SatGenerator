@@ -5,6 +5,8 @@ import satlib.problem
 
 # "normalizes" 3 sat problems by converting them according to my rules
 
+def reduce(p):
 
-p = satlib.problem.Problem()
-print(p)
+    #TODO: implement
+
+    return p
