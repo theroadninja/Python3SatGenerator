@@ -8,7 +8,7 @@ vagrant reload --provision
 
 note it cant be localhost; needs to be 0.0.0.0 !!
 
- gunicorn wsgiadapter:application -b 0.0.0.0:8000
+ gunicorn satgen.wsgiadapter:application -b 0.0.0.0:8000
 
 
 Note, apparently the .vagrant folder is not meant for checking in.
@@ -29,3 +29,5 @@ Working directory: $FileDir$
 Then when you right click on a folder, there will be an "External Tools" submenu.
 
 see also:  https://intellij-support.jetbrains.com/hc/en-us/community/posts/206105019-Open-Extern-or-Open-Command-Prompt-here-plugin
+
+Note:  might want to make it use Console2 instead by setting "Program:" to:  "C:\workspace\Program Files\Console2\Console.exe"
