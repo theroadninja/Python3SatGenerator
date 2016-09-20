@@ -3,3 +3,8 @@ creating this for initial checkin
 
 TODO:
 look into  https://toughsat.appspot.com/
+
+
+
+scripts to run are in bin (except for vagrant, which is in vagrant).
+checking in a bin folder feels dirty but apparently that is how python people do it.
