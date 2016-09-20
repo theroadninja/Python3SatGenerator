@@ -33,7 +33,7 @@ class SimpleGenerator:
             c = self.rand_clause(var_count)
             p.add(c)
 
-        print(p.to_cnf())
+        #print(p.to_cnf())
 
 
         return p
