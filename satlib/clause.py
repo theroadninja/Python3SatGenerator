@@ -97,6 +97,8 @@ class Clause:
         line = line + "0"
         return line
 
+    def __hash__(self):
+        return tuple(self.literals).__hash__()
 
     @staticmethod
     def fromCnfArray(numbers):

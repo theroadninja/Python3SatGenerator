@@ -92,6 +92,9 @@ class Lit:
             i = i * -1
         return str(i)
 
+    def __hash__(self):
+        return tuple([self.variable, self.bool]).__hash__()
+
     @staticmethod
     def fromCnf(i):
         flag = (i > 0)

@@ -16,8 +16,22 @@ class SimpleGenerator:
     def rand_lit(self, var_count):
         return Lit(self.rand_source.randint(0, var_count-1), 1 == self.rand_source.randint(0,1))
 
-    def rand_clause(self, var_count):
-        return Clause(self.rand_lit(var_count), self.rand_lit(var_count), self.rand_lit(var_count))
+    def rand_clause(self, var_count, allow_tautologies=True):
+        if var_count is None or var_count < 3:
+            raise Exception("var_count is {} - must be at least 3".format(var_count))
+
+        if allow_tautologies:
+            return Clause(self.rand_lit(var_count), self.rand_lit(var_count), self.rand_lit(var_count))
+        else:
+            literals = set()
+            safety = 100000
+            while(len(literals) < 3 and safety > 0):
+                literals.add( self.rand_lit(var_count))
+                safety -= 1 #some idiot could call this with two vars
+
+            return Clause(*list(literals))
+
+
 
     def generate(self, var_count, clause_count=None):
 
@@ -30,7 +44,7 @@ class SimpleGenerator:
 
         #TODO
         for i in range(clause_count):
-            c = self.rand_clause(var_count)
+            c = self.rand_clause(var_count, allow_tautologies=False)
             p.add(c)
 
         #print(p.to_cnf())

@@ -12,6 +12,8 @@ def normalize_path(http_path):
     ['a', 'b', 'd']
     >>> normalize_path("a////b///d////")
     ['a', 'b', 'd']
+    >>> normalize_path("aaaa////bbbb///d////")
+    ['aaaa', 'bbbb', 'd']
     >>> normalize_path("")
     []
     >>> normalize_path("/")
@@ -25,7 +27,16 @@ def normalize_path(http_path):
     '''
 
     #remove duplicates
-    path = ''.join(x for x, _ in itertools.groupby(http_path)).rstrip("/").lstrip("/")
+    #path = ''.join(x for x, _ in itertools.groupby(http_path)).rstrip("/").lstrip("/")
+    path = []
+    for x in http_path:
+        if x == "/" and len(path) > 0 and path[-1] == "/":
+            continue
+        else:
+            path.append(x)
+
+    path = "".join(path)
+    path = path.strip("/")
     if path == "":
         return []
     return path.split('/')
