@@ -13,6 +13,9 @@ class SimpleGenerator:
 
         self.rand_source = rand_source
 
+    def rand_var(self, var_count):
+        return self.rand_source.randint(0, var_count-1)
+
     def rand_lit(self, var_count):
         return Lit(self.rand_source.randint(0, var_count-1), 1 == self.rand_source.randint(0,1))
 
@@ -23,13 +26,18 @@ class SimpleGenerator:
         if allow_tautologies:
             return Clause(self.rand_lit(var_count), self.rand_lit(var_count), self.rand_lit(var_count))
         else:
-            literals = set()
+            variables = set()
+
             safety = 100000
-            while(len(literals) < 3 and safety > 0):
-                literals.add( self.rand_lit(var_count))
+            while(len(variables) < 3 and safety > 0):
+                variables.add( self.rand_var(var_count) )
                 safety -= 1 #some idiot could call this with two vars
 
-            return Clause(*list(literals))
+            literals = list()
+            for v in variables:
+                literals.append( Lit(v, 1 == self.rand_source.randint(0,1)))
+
+            return Clause(*literals)
 
 
 

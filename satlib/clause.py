@@ -100,6 +100,14 @@ class Clause:
     def __hash__(self):
         return tuple(self.literals).__hash__()
 
+    def all_variables_different(self):
+        '''
+
+        :return: True if this clause has all different variables
+        '''
+        raise "TODO" #not sure I need this
+
+
     @staticmethod
     def fromCnfArray(numbers):
         if numbers[-1] != 0:
